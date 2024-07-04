@@ -51,16 +51,4 @@ export class ProductsService {
 
     return product;
   }
-
-  async getProductByTokoId(tokoId: string) {
-    const products = await this.prismaService.products.findMany({
-      where: { Toko_id: tokoId },
-    });
-
-    if (!products) {
-      throw new HttpException('Product Not Found', HttpStatus.NOT_FOUND);
-    }
-
-    return products;
-  }
 }
