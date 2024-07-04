@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum USEROLE {
+  ADMIN @map("admin")
+  COMMON @map("common")
+}
+
+model User {
+  Id String @id @default(uuid())
+  Name String @db.VarChar(200)
+  Email String @db.VarChar(200)
+  Phone String @db.VarChar(100)
+  Password String @db.VarChar(100)
+  Role USEROLE
+  Photo String @db.VarChar(255)
+  Is_Active Boolean @default(false)
+  Alamat String @db.Text
+  Age Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Otp OTP?
+  Toko Toko?
+  Orders Orders[]
+
+  @@map("users")
+}
+
+model OTP {
+  Id String @default(uuid()) @id
+  Otp_code String
+  User User @relation(fields: [User_id], references: [Id], onUpdate: Cascade, onDelete: Cascade)
+  User_id String @unique
+  Expired_time DateTime
+  CreatedAt DateTime @default(now())
+  UpdatedAt DateTime @updatedAt
+
+  @@unique([Id, User_id])
+  @@map("otps")
+}
+
+model Toko {
+  Id String @default(uuid()) @id
+  Name String @db.VarChar(200)
+  Descripsi_Toko String @db.Text
+  Photo String @db.VarChar(255)
+  Alamat String @db.Text
+  User User @relation(fields: [User_id], references: [Id], onUpdate: Cascade, onDelete: Cascade)
+  User_id String @unique
+  Products Products[]
+  CreatedAt DateTime @default(now())
+  UpdatedAt DateTime @updatedAt
+  
+  @@unique([Id, User_id])
+  @@map("tokos")
+}
+
+
+model Products {
+  Id String @id @default(uuid())
+  Name String @db.VarChar(255)
+  Description String @db.Text
+  Price Int
+  Rating Int?
+  Discount Int?
+  Available Int
+  Photo String @db.VarChar(255)
+  Toko Toko @relation(fields: [Toko_id], references: [Id], onUpdate: Cascade, onDelete: Cascade)
+  Order Orders[]
+  Toko_id String
+
+  @@unique([Id])
+  @@map("products")
+}
+
+model Orders {
+  Id String @id @default(uuid())
+  Product Products @relation(fields: [Product_id], references: [Id], onUpdate: Cascade, onDelete: Cascade)
+  Product_id String
+  User User @relation(fields: [User_Id], references: [Id], onUpdate: Cascade, onDelete: Cascade)
+  User_Id String
+  Status Boolean @default(false)
+  Method String
+  Payment_Order DateTime @default(now())
+  Payment_Date DateTime?
+
+  @@map("orders")
+}
