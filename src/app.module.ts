@@ -1,3 +1,4 @@
+import { OrdersModule } from './orders/orders.module';
 import { ProductsModule } from './products/products.module';
 import { TokosModule } from './tokos/tokos.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
@@ -11,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    OrdersModule,
     ProductsModule,
     TokosModule,
     CloudinaryModule,
