@@ -1,10 +1,12 @@
 import * as nodemailer from 'nodemailer';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
   service: 'gmail',
   auth: {
-    user: 'muhamadmuzani449@gmail.com',
-    pass: 'jmfw sqai rois twcl',
+    user: process.env.EMAIL,
+    pass: process.env.PASSWORD,
   },
   tls: { rejectUnauthorized: false },
 };
