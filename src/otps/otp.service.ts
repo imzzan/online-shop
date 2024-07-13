@@ -41,6 +41,10 @@ export class OtpService {
       throw new HttpException('Kode Tidak Sesuai', HttpStatus.BAD_REQUEST);
     }
 
+    if (kodeOtp.Expired_time <= new Date(new Date().getTime())) {
+      throw new HttpException('Waktu Telah Habis', HttpStatus.BAD_REQUEST);
+    }
+
     return kodeOtp.User_id;
   }
 }

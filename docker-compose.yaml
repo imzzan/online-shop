@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  shopee-mini-database:
+    container_name: shopee-mini-database
+    image: postgres:alpine3.19
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shopee-mini-api
+  shopee-mini:
+    container_name: shopee-mini
+    ports:
+      - 3000:3000
+    build: .
+    networks:
+      - shopee-mini-api
+    restart: always
+    environment:
+      env_file: .env
+    depends_on:
+      - shopee-mini-database
+networks:
+  shopee-mini-api:
+    external: true
+volumes:
+  pgdata: {}

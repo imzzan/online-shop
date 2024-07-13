@@ -3,8 +3,8 @@ import * as nodemailer from 'nodemailer';
 const config = {
   service: 'gmail',
   auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
+    user: 'muhamadmuzani449@gmail.com',
+    pass: 'jmfw sqai rois twcl',
   },
   tls: { rejectUnauthorized: false },
 };

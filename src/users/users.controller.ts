@@ -49,7 +49,6 @@ export class UsersController {
 
   @Post('/sign-up')
   @UseInterceptors(FileInterceptor('Photo', userUploadOption))
-  @HttpCode(HttpStatus.CREATED)
   async signUp(
     @Body() paylaod: CreateUserDto,
     @UploadedFile(
@@ -70,10 +69,10 @@ export class UsersController {
       });
 
       const otp = Math.floor(Math.random() * 900000) + 100000;
-      const time = new Date().getTime() + 300000;
+      const time = new Date().getTime();
 
       const otp_code = otp.toString();
-      const expired_time = new Date(time);
+      const expired_time = new Date(time + 3 * 60 * 1000);
       const { Id } = response;
 
       const otpResponse = await this.otpService.create({
